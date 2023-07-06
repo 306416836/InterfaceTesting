@@ -28,7 +28,6 @@ loopInterface 压测 接口
 mysqlConfig   数据库配置
 axiosConfig   axios配置
 
-# first 
 
 ```
 
