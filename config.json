@@ -1,0 +1,27 @@
+{
+	"axiosConfig":{
+		"baseURL": "",
+		"headers": { 
+			"token" : "",
+			"cookie" : ""
+		}
+	},
+	"mysqlConfig":{
+		"host"     : "",
+		"user"     : "",
+		"password" : "",
+		"database" : ""
+	},
+	"loopInterface":[
+		{
+			"path":"",
+			"param":"",
+			"type":"GET"
+		},
+		{
+			"path":"",
+			"param":"",
+			"type":"POST"
+		}
+	]
+}
