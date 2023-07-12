@@ -25,7 +25,6 @@ node master.js  --processes 5 --sleepTime 2000  --loopNum 10
 --loopNum   子进程 循环次数  当值为true时，无限循环
 
 
-
-
+仅用于压测~如用作违法行为~与作者本人无关~
 ```
 
