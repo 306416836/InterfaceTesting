@@ -1,17 +1,18 @@
-
 const axios = require('axios');
 const config = require('./config.json');
 const axiosInstance = axios.create(config.axiosConfig);
-var mysql = require('mysql');
-var connection = mysql.createConnection(config.mysqlConfig);
+const mysql = require('mysql');
+const connection = mysql.createConnection(config.mysqlConfig);
+let eventLoopNum = 0
+let endshow=false;
 
 async function loopEvent(){
+	await wait(awaitTime)
 	for(let i=0;i<config.loopInterface.length;i++){
 		loopItem(config.loopInterface[i])
 	}
 	counter++
 	console.log(` 进程 ${processesId} 已执行 ${counter} 次数 `)
-	await wait(awaitTime)
 }
 
 connection.connect();
@@ -36,12 +37,12 @@ async function init(){
 			await loopEvent()
 		}
 	}
-	console.log('脚本执行完毕')
-	// await wait(10000) 开放注释可以自动关闭脚本，但可能无法得到正确的反应时间
-	// connection.end();  //当sql 量等于 进程数*循环数量*单次接口数量  的时候，可以停止脚本
+	console.log('脚本执行完毕,等待异步存储中...')
+	endshow=true
 }
 
 async function loopItem(list){
+	eventLoopNum++
 	let starTime = new Date()
 	axiosInstance({
 	  method: list.type,
@@ -76,10 +77,15 @@ function insql(path,posID,time,state,remark,startTime,endTime){
 	 VALUES('${path}','${posID}','${time}','${state}','${remark}','${uuuid}','${processesNum}','${awaitTime}','${startTime}',
 	 '${endTime}','${loopAll}')`;
 	connection.query(addSql,function (err, result) {
+			eventLoopNum--
+			if(eventLoopNum===0&&endshow){
+				connection.end()
+				console.log('存储执行完毕')
+			}
 	        if(err){
 	         console.log('[INSERT ERROR] - ',err.message);
 	         return;
-	        }        
+	        }
 	       //console.log('--------------------------INSERT----------------------------');
 	});
 
